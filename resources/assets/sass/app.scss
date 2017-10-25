@@ -5,5 +5,7 @@
 // Variables
 @import "variables";
 
-// Bootstrap
-@import "~bootstrap-sass/assets/stylesheets/bootstrap";
+// Semantic
+@import "../css/semantic.css";
+
+@import "custom.scss";
