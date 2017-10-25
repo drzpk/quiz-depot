@@ -28,12 +28,30 @@ class DatabaseManager {
             return null;
 
         // utworzenie instancji modelu kategorii
-        $category = new Category();
-        $category->id = $result->category_id;
-        $category->name = $result->name;
-        $category->description = $result->description;
-        $category->image = $result->image;
+        $category = $this->constructCategory($result);
 
+        return $category;
+    }
+
+    /**
+     * Zwraca listę dostępnych kategorii.
+     */
+    public function getCategories() {
+        $result = DB::table('categories')->get();
+
+        $categories = [];
+        foreach ($result as $row)
+            $categories[] = $this->constructCategory($row);
+
+        return $categories;
+    }
+
+    private function constructCategory($row) {
+        $category = new Category();
+        $category->id = $row->category_id;
+        $category->name = $row->name;
+        $category->description = $row->description;
+        $category->image = $row->image;
         return $category;
     }
 
