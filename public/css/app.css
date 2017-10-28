@@ -37689,3 +37689,17 @@ header h1 {
   color: #009000;
 }
 
+/* ===== STRONA KATEGORII ===== */
+
+.category-info .content {
+  padding-top: 5% !important;
+}
+
+.category-info .content .header {
+  font-size: 1.6em !important;
+}
+
+.category-info .content .description > p {
+  font-size: 1.25em;
+}
+

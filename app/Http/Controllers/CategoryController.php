@@ -16,6 +16,9 @@ class CategoryController extends Controller {
         $this->database = $databaseManager;
     }
     
+    /**
+     * Wyświetla listę kategorii.
+     */
     public function list() {
         $categories = $this->database->getCategories();
 
@@ -26,5 +29,24 @@ class CategoryController extends Controller {
         }
 
         return view('layouts.categories', ['categories' => $categories]);
+    }
+
+    /**
+     * Wyświetla wybraną kategorię.
+     */
+    public function displayCategory($categoryId, DatabaseManager $manager) {
+        $category = $manager->getCategoryById((int) $categoryId);
+        if ($category == null)
+            return 'nie znaleziono kategorii';
+
+        // usunięcie godziny z daty utworzenia quizu
+        $quizzes = $manager->getQuizzes($category);
+        foreach ($quizzes as &$quiz)
+            $quiz->created = substr($quiz->created, 0, strpos($quiz->created, ' '));
+
+        return view('layouts.category', [
+            'category' => $category,
+            'quizzes' => $quizzes
+        ]);
     }
 }

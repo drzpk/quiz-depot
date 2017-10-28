@@ -22,8 +22,23 @@ class DatabaseManager {
      * Zwraca obiekt kategorii na podstawie nazwy lub null, jeśli dana kategoria
      * nie została odnaleziona.
      */
-    public function getCategory($categoryName) {
+    public function getCategoryByName($categoryName) {
         $result = DB::table('categories')->where('name', '=', $categoryName)->first();
+        if ($result == null)
+            return null;
+
+        // utworzenie instancji modelu kategorii
+        $category = $this->constructCategory($result);
+
+        return $category;
+    }
+
+    /**
+     * Zwraca obiekt kategorii na podstawie identyfikatora lub null, jeśli dana kategoria
+     * nie została odnaleziona.
+     */
+    public function getCategoryById($categoryId) {
+        $result = DB::table('categories')->where('category_id', '=', $categoryId)->first();
         if ($result == null)
             return null;
 
@@ -106,7 +121,7 @@ class DatabaseManager {
     public function createCategory(Category &$category, $check = true) {
         // sprawdzenie, czy kategoria już istnieje
         if ($check) {
-            $created = $this->getCategory($category->name);
+            $created = $this->getCategoryByName($category->name);
             if ($created) {
                 $category = $created;
                 return true;

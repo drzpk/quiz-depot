@@ -9,7 +9,7 @@ class Quiz {
     public $category = null;
     /** Nazwa quizu */
     public $name = "";
-    /** Data utworzenia quizu, format timestamp */
+    /** Data utworzenia quizu, format: "<data> <godzina>" */
     public $created = 0;
     /** Liczba rozwiązań quizu */
     public $attempts = 0;

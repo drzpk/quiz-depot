@@ -8,3 +8,16 @@ header {
         color: #009000;
     }
 }
+
+/* ===== STRONA KATEGORII ===== */
+.category-info .content {
+    padding-top: 5% !important;
+
+    .header {
+        font-size: 1.6em !important;
+    }
+
+    .description > p {
+        font-size: 1.25em;
+    }
+}

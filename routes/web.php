@@ -12,3 +12,4 @@
 */
 
 Route::get('/', 'CategoryController@list');
+Route::get('/categories/{categoryId}', 'CategoryController@displayCategory');

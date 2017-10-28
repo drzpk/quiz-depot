@@ -13,7 +13,7 @@
             @endif
         </div>
         <div class="content">
-            <a class="header">{{ $category->name }}</a>
+            <a class="header" href="/categories/{{ $category->id }}">{{ $category->name }}</a>
             <div class="description">
                 <p>{{ $category->description }}</p>
             </div>
