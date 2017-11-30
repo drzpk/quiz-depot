@@ -21,3 +21,114 @@ header {
         font-size: 1.25em;
     }
 }
+
+/* ===== QUIZY ===== */
+$goodColor: #42ab3b;
+$badColor: #ca4f4f;
+
+.quiz-info {
+    margin: 40px 0;
+    text-align: center;
+    
+    > h2 {
+        margin-bottom: 5px;
+        font-size: 2.7em;
+    
+        span {
+            color: #318dd0;
+        }
+    }
+
+    > p {
+        font-size: 1.4em;
+    }
+
+    > .result {
+        font-size: 1.9em;
+
+        > span {
+            font-weight: bold;
+            color: #318dd0;
+        }
+    }
+
+    > .passed {
+        font-size: 1.8em;
+        color: $goodColor;
+    }
+
+    > .failed {
+        font-size: 1.8em;
+        color: $badColor;
+    }
+}
+
+.question {
+    border: 2px solid lightgray;
+    border-radius: 8px;
+    margin-bottom: 30px;
+
+    > p {
+        font-size: 1.45em;
+        padding: 10px 20px;
+        border: 2px solid lightgray;
+        border-radius: 8px 8px 0 0;
+        margin: -2px -2px 0 -2px;
+        background-color: #eaeaea;
+    }
+    
+    img {
+        display: block;
+        margin: auto;
+        width: 70%;
+    }
+
+    .answers {
+        padding: 10px;
+
+        > label {
+            display: block;
+            font-size: 1.3em;
+            background-color: #f7f7f7;
+            padding: 15px;
+            margin: 7px 0;
+            border: 2px solid lightgray;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+
+            > input {
+                margin-right: 10px;
+            }
+        }
+
+        > label:hover {
+            border-color: #8c8c8c;
+        }
+        
+        > label.checked {
+            border-color: #8c8c8c;
+            background-color: #5098f1;
+            color: white;
+        }
+
+        > label.right {
+            background-color: $goodColor;
+        }
+
+        > label.wrong {
+            background-color: $badColor;
+        }
+
+        > .no-answer {
+            padding: 15px;
+            background: #eb2323;
+            font-weight: bold;
+            color: white;
+        }
+    }
+}
+
+.end-quiz {
+    text-align: center;
+}

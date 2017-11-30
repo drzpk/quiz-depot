@@ -13,3 +13,5 @@
 
 Route::get('/', 'CategoryController@list');
 Route::get('/categories/{categoryId}', 'CategoryController@displayCategory');
+Route::get('/quizzes/{quizId}', 'QuizController@display');
+Route::post('/quizzes/{quizId}', 'QuizController@solve');

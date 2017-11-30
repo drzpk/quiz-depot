@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" href="{{ url('css/app.css') }}">
+        <script src="{{ url('js/app.js') }}"></script>
     </head>
     <body>
         @include('components.header')

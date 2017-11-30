@@ -94,6 +94,82 @@ class DatabaseManager {
     }
 
     /**
+     * Zwraca obiekt quizu na podstawie podanego identyfikatora lub null, jeśli quiz nie został odnaleziony.
+     * Parametr $randomQuestions określa, czy pytania mają być od razu wylosowane.
+     */
+    public function getQuizById($quizId, $randomQuestions = false) {
+        $result = DB::table('quizzes')
+            ->where('quiz_id', '=', $quizId)
+            ->first();
+
+        if ($result == null)
+            return null;
+
+        $category = $this->getCategoryById($result->category_id);
+        if ($category == null)
+            return null;
+        
+        $quiz = new Quiz();
+        $quiz->id = $result->quiz_id;
+        $quiz->category = $category;
+        $quiz->name = $result->name;
+        $quiz->created = $result->created;
+        $quiz->attempts = $result->attempts;
+        $quiz->questionAmount = $result->questions;
+
+        if ($randomQuestions) {
+            // losowanie pytań
+            $questions = [];
+            $questionResult = DB::table('questions')
+                ->where('quiz_id', '=', $quizId)
+                ->orderByRaw('RAND()')
+                ->limit($quiz->questionAmount)
+                ->get();
+            
+            foreach ($questionResult as $question)
+                $questions[] = $this->constructQuestion($question, $quiz);
+
+            $quiz->questions = $questions;
+        }
+
+        return $quiz;
+    }
+
+    /**
+     * Zwraca tablicę obiektów klasy Question, na podstawie podanej tablicy identyfikatorów.
+     * Zwrócona będzie miała identyfikatory quizów jako klucze.
+     * Uwaga: obkiekty w tablicy będą miały pole 'quiz' ustawione na null.
+     */
+    public function getQuestionsByIds(array $ids) {
+        $result = DB::table('questions')
+            ->whereIn('question_id', $ids)
+            ->get()
+            ->keyBy('question_id')
+            ->map(function ($item, $key) {
+                return $this->constructQuestion($item, null);
+            })
+            ->toArray();
+
+        return $result;
+    }
+
+    private function constructQuestion($questionRow, $quiz) {
+        $question = new Question();
+        $question->id = $questionRow->question_id;
+        $question->quiz = $quiz;
+        $question->question = $questionRow->question;
+        $question->rightAnswer = $questionRow->right_answer;
+        $question->image = '/img/quiz/question/' . $questionRow->image;
+        // TODO: tagi
+
+        $question->wrongAnswers[0] = $questionRow->wrong_answer_1;
+        $question->wrongAnswers[1] = $questionRow->wrong_answer_2;
+        $question->wrongAnswers[2] = $questionRow->wrong_answer_3;
+
+        return $question;
+    }
+
+    /**
      * Zwraca listę wszystkich quizów należących do danej kategorii.
      */
     public function getQuizzes(Category $category) {
@@ -108,10 +184,6 @@ class DatabaseManager {
         }
 
         return $return;
-    }
-
-    public function getQuestions(Quiz $quiz) {
-
     }
 
     /**

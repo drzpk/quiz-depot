@@ -37703,3 +37703,113 @@ header h1 {
   font-size: 1.25em;
 }
 
+/* ===== QUIZY ===== */
+
+.quiz-info {
+  margin: 40px 0;
+  text-align: center;
+}
+
+.quiz-info > h2 {
+  margin-bottom: 5px;
+  font-size: 2.7em;
+}
+
+.quiz-info > h2 span {
+  color: #318dd0;
+}
+
+.quiz-info > p {
+  font-size: 1.4em;
+}
+
+.quiz-info > .result {
+  font-size: 1.9em;
+}
+
+.quiz-info > .result > span {
+  font-weight: bold;
+  color: #318dd0;
+}
+
+.quiz-info > .passed {
+  font-size: 1.8em;
+  color: #42ab3b;
+}
+
+.quiz-info > .failed {
+  font-size: 1.8em;
+  color: #ca4f4f;
+}
+
+.question {
+  border: 2px solid lightgray;
+  border-radius: 8px;
+  margin-bottom: 30px;
+}
+
+.question > p {
+  font-size: 1.45em;
+  padding: 10px 20px;
+  border: 2px solid lightgray;
+  border-radius: 8px 8px 0 0;
+  margin: -2px -2px 0 -2px;
+  background-color: #eaeaea;
+}
+
+.question img {
+  display: block;
+  margin: auto;
+  width: 70%;
+}
+
+.question .answers {
+  padding: 10px;
+}
+
+.question .answers > label {
+  display: block;
+  font-size: 1.3em;
+  background-color: #f7f7f7;
+  padding: 15px;
+  margin: 7px 0;
+  border: 2px solid lightgray;
+  border-radius: 8px;
+  cursor: pointer;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+}
+
+.question .answers > label > input {
+  margin-right: 10px;
+}
+
+.question .answers > label:hover {
+  border-color: #8c8c8c;
+}
+
+.question .answers > label.checked {
+  border-color: #8c8c8c;
+  background-color: #5098f1;
+  color: white;
+}
+
+.question .answers > label.right {
+  background-color: #42ab3b;
+}
+
+.question .answers > label.wrong {
+  background-color: #ca4f4f;
+}
+
+.question .answers > .no-answer {
+  padding: 15px;
+  background: #eb2323;
+  font-weight: bold;
+  color: white;
+}
+
+.end-quiz {
+  text-align: center;
+}
+
