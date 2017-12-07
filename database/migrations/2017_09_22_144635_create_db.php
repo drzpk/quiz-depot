@@ -33,6 +33,7 @@ class CreateDb extends Migration {
             $table->timestamp('created')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->integer('attempts')->unsigned()->default(0);
             $table->integer('questions')->unsigned()->default(40);
+            $table->integer('threshold')->unsigned()->default(0);
 
             $table->foreign('category_id')->references('category_id')->on('categories');
         });

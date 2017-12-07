@@ -130,6 +130,7 @@ class DatabaseManager {
         $quiz->attempts = $row->attempts;
         $quiz->questionCount = $row->question_count;
         $quiz->questionChunkSize = $row->questions;
+        $quiz->threshold = $row->threshold;
 
         return $quiz;
     }

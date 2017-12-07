@@ -19,6 +19,8 @@ class Quiz {
     public $questionChunkSize = 0;
     /** Wylosowane pytania (obiekty typu Question) */
     public $questions = [];
+    /** Minimalna liczba poprawnych odpowiedzi do przejścia quizu (0 oznacza brak progu) */
+    public $threshold = 0;
 
     public function checkConstraints() {
         if (strlen($this->name) > 32)

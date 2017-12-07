@@ -10,10 +10,10 @@
     <p>Liczba pytań: {{ $questionChunkSize }}</p>
     @if ($solution)
     <p class="result">Uzyskany wynik: <span>{{ $score }}</span></p>
-        @if ($passed)
-        <p class="passed">Gratulacje! Udało ci się zdać egzamin :)</p>
-        @else
-        <p class="failed">Niestety nie udało ci się zdać egzaminu :(</p>
+        @if ($passed === true)
+        <p class="passed">Gratulacje! Udało ci się zdać test :)</p>
+        @elseif ($passed === false)
+        <p class="failed">Niestety nie udało ci się zdać testu :(</p>
         @endif
     @endif
 </div>

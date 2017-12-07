@@ -91,9 +91,6 @@ class QuizController extends Controller {
             $question = $questions[$answer['id']];
             $question->answers = $answer['answers'];
 
-            // DEBUG
-            $question->selected = $selected;
-
             $question->right = $answer['right'];        
             if ($selected != null && $selected == $answer['right']) {
                 // Poprawna odpowiedź
@@ -111,15 +108,21 @@ class QuizController extends Controller {
             $questionIndex++;   
         }
 
+        // Obliczenie wyniku
         $score = round($correct / $quiz->questionChunkSize * 1000) / 10;
         $score = "$correct/{$quiz->questionChunkSize} ($score %)";
+
+        if ($quiz->threshold > 0)
+            $passed = $correct >= $quiz->threshold;
+        else
+            $passed = null;
 
         $params = [
             'name' => $quiz->name,
             'questions' => $viewQuestions,
             'questionChunkSize' => $quiz->questionChunkSize,
             'score' => $score,
-            'passed' => $correct >= 20,
+            'passed' => $passed,
             'solution' => true
         ];
         return view('layouts.quiz', $params);
