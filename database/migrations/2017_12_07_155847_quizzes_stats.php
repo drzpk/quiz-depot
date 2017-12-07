@@ -11,7 +11,7 @@ class QuizzesStats extends Migration {
      */
     public function up() {
         $statsQuery = <<<EOT
-        CREATE VIEW quizzes_stats AS (
+        CREATE VIEW IF NOT EXISTS quizzes_stats AS (
             SELECT  *,
                     (
                         SELECT COUNT(*)
