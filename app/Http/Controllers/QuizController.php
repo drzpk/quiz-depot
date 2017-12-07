@@ -49,7 +49,7 @@ class QuizController extends Controller {
             'quizId' => $quiz->id,
             'name' => $quiz->name,            
             'questions' => $quiz->questions,
-            'questionAmount' => $quiz->questionAmount,
+            'questionChunkSize' => $quiz->questionChunkSize,
             'solution' => false
         ];
         return view('layouts.quiz', $params);
@@ -111,13 +111,13 @@ class QuizController extends Controller {
             $questionIndex++;   
         }
 
-        $score = round($correct / $quiz->questionAmount * 1000) / 10;
-        $score = "$correct/{$quiz->questionAmount} ($score %)";
+        $score = round($correct / $quiz->questionChunkSize * 1000) / 10;
+        $score = "$correct/{$quiz->questionChunkSize} ($score %)";
 
         $params = [
             'name' => $quiz->name,
             'questions' => $viewQuestions,
-            'questionAmount' => $quiz->questionAmount,
+            'questionChunkSize' => $quiz->questionChunkSize,
             'score' => $score,
             'passed' => $correct >= 20,
             'solution' => true

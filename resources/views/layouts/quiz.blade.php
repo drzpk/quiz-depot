@@ -7,7 +7,7 @@
     @else
     <h2>Odpowiedzi: <span>{{ $name }}</span></h2>
     @endif
-    <p>Liczba pytań: {{ $questionAmount }}</p>
+    <p>Liczba pytań: {{ $questionChunkSize }}</p>
     @if ($solution)
     <p class="result">Uzyskany wynik: <span>{{ $score }}</span></p>
         @if ($passed)

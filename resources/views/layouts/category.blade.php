@@ -23,9 +23,11 @@
 @foreach($quizzes as $quiz)
 <div class="item">
     <a class="header" href="/quizzes/{{ $quiz->id }}">{{ $quiz->name }}</a>
-    Liczba pytań: {{ $quiz->questionAmount }}
+    Dostępnych pytań: {{ $quiz->questionCount }}
     <br>
-    Data utworzenia: {{ $quiz->created }}
+    Losowanych pytań: {{ $quiz->questionChunkSize }}
+    <br>
+    Liczba podejść: {{ $quiz->attempts }}
 </div>
 @endforeach
 </div>

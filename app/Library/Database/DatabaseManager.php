@@ -74,7 +74,7 @@ class DatabaseManager {
      * Zwraca obiekt quizu na podstawie nazwy lub null, jeśli quiz nie został odnaleziony.
      */
     public function getQuiz(Category $category, $quizName) {
-        $result = DB::table('quizzes')
+        $result = DB::table('quizzes_stats')
             ->where('category_id', '=', $category->id)
             ->where('name', '=', $quizName)
             ->first();
@@ -82,14 +82,7 @@ class DatabaseManager {
         if ($result == null)
             return null;
 
-        $quiz = new Quiz();
-        $quiz->id = $result->quiz_id;
-        $quiz->category = $category;
-        $quiz->name = $result->name;
-        $quiz->created = $result->created;
-        $quiz->attempts = $result->attempts;
-        $quiz->questionAmount = $result->questions;
-
+        $quiz = $this->constructQuiz($result, $category);
         return $quiz;
     }
 
@@ -98,7 +91,7 @@ class DatabaseManager {
      * Parametr $randomQuestions określa, czy pytania mają być od razu wylosowane.
      */
     public function getQuizById($quizId, $randomQuestions = false) {
-        $result = DB::table('quizzes')
+        $result = DB::table('quizzes_stats')
             ->where('quiz_id', '=', $quizId)
             ->first();
 
@@ -109,21 +102,14 @@ class DatabaseManager {
         if ($category == null)
             return null;
         
-        $quiz = new Quiz();
-        $quiz->id = $result->quiz_id;
-        $quiz->category = $category;
-        $quiz->name = $result->name;
-        $quiz->created = $result->created;
-        $quiz->attempts = $result->attempts;
-        $quiz->questionAmount = $result->questions;
-
+        $quiz = $this->constructQuiz($result, $category);
         if ($randomQuestions) {
             // losowanie pytań
             $questions = [];
             $questionResult = DB::table('questions')
                 ->where('quiz_id', '=', $quizId)
                 ->orderByRaw('RAND()')
-                ->limit($quiz->questionAmount)
+                ->limit($quiz->questionChunkSize)
                 ->get();
             
             foreach ($questionResult as $question)
@@ -131,6 +117,19 @@ class DatabaseManager {
 
             $quiz->questions = $questions;
         }
+
+        return $quiz;
+    }
+
+    private function constructQuiz($row, $category = null) {
+        $quiz = new Quiz();
+        $quiz->id = $row->quiz_id;
+        $quiz->category = $category;
+        $quiz->name = $row->name;
+        $quiz->created = $row->created;
+        $quiz->attempts = $row->attempts;
+        $quiz->questionCount = $row->question_count;
+        $quiz->questionChunkSize = $row->questions;
 
         return $quiz;
     }
@@ -173,7 +172,7 @@ class DatabaseManager {
      * Zwraca listę wszystkich quizów należących do danej kategorii.
      */
     public function getQuizzes(Category $category) {
-        $result = DB::table('quizzes')
+        $result = DB::table('quizzes_stats')
             ->select('name')
             ->where('category_id', '=', $category->id)
             ->get();
@@ -242,8 +241,8 @@ class DatabaseManager {
             'category_id' => $quiz->category->id,
             'name' => $quiz->name
         ];
-        if ($quiz->questionAmount > 0)
-            $query['questions'] = $quiz->questionAmount;
+        if ($quiz->questionChunkSize > 0)
+            $query['questions'] = $quiz->questionChunkSize;
 
         $id = DB::table('quizzes')->insertGetId($query);
         if ($id == false)

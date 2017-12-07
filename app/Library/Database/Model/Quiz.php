@@ -13,9 +13,11 @@ class Quiz {
     public $created = 0;
     /** Liczba rozwiązań quizu */
     public $attempts = 0;
+    /** Liczba pytań do tego quizu w bazie */
+    public $questionCount = 0;
     /** Liczba pytań pobieranych jednocześnie */
-    public $questionAmount = 0;
-    /** Pytania (obiekty typu Question) */
+    public $questionChunkSize = 0;
+    /** Wylosowane pytania (obiekty typu Question) */
     public $questions = [];
 
     public function checkConstraints() {
