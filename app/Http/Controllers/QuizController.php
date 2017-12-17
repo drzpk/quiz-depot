@@ -18,22 +18,23 @@ class QuizController extends Controller {
         if ($quiz == null)
             return 'Nie znaleziono quizu o podanym identyfikatorze';
 
-        // tablica przechowująca poprawne odpowiedzi dla każdego pytania (litery odpowiedzi)
-        $rightAnswers = [];
+        // tablica przechowująca poprawne odpowiedzi dla każdego pytania
+        $solution = [];
         $answerLetters = ['a', 'b', 'c', 'd'];
 
         // ułożenie pytań w losowej kolejności
         foreach ($quiz->questions as $question) {
             $answers = $question->wrongAnswers;
             $answers[] = null;
-            shuffle($answers);
+            $seed = microtime();
+            $this->shuffleArray($answers, $seed);
 
-            $right = array_search(null, $answers);
-            $answers[$right] = $question->rightAnswer;
-            $rightAnswers[] = [
+            $rightIndex = array_search(null, $answers);
+            $answers[$rightIndex] = $question->rightAnswer;
+            $solution[] = [
                 'id' => $question->id,
-                'answers' => $answers,
-                'right' => $answerLetters[$right]
+                'seed' => $seed,
+                'right' => $rightIndex
             ];
 
             $question->answers = $answers;
@@ -42,7 +43,7 @@ class QuizController extends Controller {
         }
 
         // zapisanie poprawnych odpowiedzi w sesji
-        $request->session()->put('answers', $rightAnswers);
+        $request->session()->put('solution', $solution);
         $request->session()->put('quizId', $quizId);
 
         $params = [
@@ -60,7 +61,7 @@ class QuizController extends Controller {
      */
     public function solve(Request $request, DatabaseManager $manager, $quizId) {
         $session = $request->session();
-        if (!$session->has('answers') || ($session->has('quizId') && $session->get('quizId') != $quizId)) {
+        if (!$session->has('solution') || ($session->has('quizId') && $session->get('quizId') != $quizId)) {
             // Dla tej sesji nie zostały wygenerowane żadne parametry
             $session->forget('quizId');
             return redirect('/');
@@ -71,16 +72,18 @@ class QuizController extends Controller {
         if ($quiz == null)
             return 'Nie znaleziono quizu o podanym identyfikatorze';
 
-        $answers = $session->get('answers');
-        $questionsIds = array_map(function ($item) {
+        $solution = $session->get('solution');
+        $questionList = array_map(function ($item) {
             return $item['id'];
-        }, $answers);
-        $questions = $manager->getQuestionsByIds($questionsIds);
+        }, $solution);
+        $questions = $manager->getQuestionsByIds($questionList);
 
         $questionIndex = 1;
         $correct = 0;
         $viewQuestions = [];
-        foreach ($answers as $answer) {
+        $answerLetters = ['a', 'b', 'c', 'd'];
+
+        foreach ($solution as $entry) {
             // Zaznaczona odpowiedź
             $qname = 'q_' . $questionIndex;
             if ($request->has($qname))
@@ -88,11 +91,18 @@ class QuizController extends Controller {
             else
                 $selected = null;
             
-            $question = $questions[$answer['id']];
-            $question->answers = $answer['answers'];
+            $question = $questions[$entry['id']];
+            $seed = $entry['seed'];
 
-            $question->right = $answer['right'];        
-            if ($selected != null && $selected == $answer['right']) {
+            // Wygenerowanie odpowiedzi
+            $answers = $question->wrongAnswers;
+            $answers[] = $question->rightAnswer;
+            $this->shuffleArray($answers, $seed);
+            $question->answers = $answers;
+
+            $rightLetter = $answerLetters[$entry['right']];
+            $question->right = $rightLetter;
+            if ($selected != null && $selected == $rightLetter) {
                 // Poprawna odpowiedź
                 $question->wrong = false;
                 $correct++;
@@ -126,5 +136,24 @@ class QuizController extends Controller {
             'solution' => true
         ];
         return view('layouts.quiz', $params);
+    }
+
+    /**
+     * Miesza kolejność elementów tablicy według podanego ziarna. Podanie takiego
+     * samego ziarna zawsze miesza tablicę w taki sam sposób.
+     * 
+     * @param array tablica do pomieszania
+     * @param seed  ziarno - wynik funkcji microtime()
+     */
+    private function shuffleArray(array &$array, string $seed) {
+        $number = preg_split('/\s/', $seed)[0];
+        $number = intval($number * 1000000);
+        srand($number);
+        for ($i = 0; $i < count($array); $i++) {
+            $j = rand(0, count($array) - 1);
+            $tmp = $array[$i];
+            $array[$i] = $array[$j];
+            $array[$j] = $tmp;
+        }
     }
 }
