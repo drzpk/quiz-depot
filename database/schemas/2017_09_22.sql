@@ -58,12 +58,12 @@ DROP TABLE IF EXISTS `quiz_depot`.`quizzes` ;
 
 CREATE TABLE IF NOT EXISTS `quiz_depot`.`quizzes` (
   `quiz_id` INT NOT NULL AUTO_INCREMENT,
-  `category_id` INT NULL,
+  `category_id` INT NOT NULL,
   `name` VARCHAR(32) NOT NULL,
-  `created` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-  `attemps` INT UNSIGNED NULL DEFAULT 0 COMMENT 'liczba prób rozwiązywania quizu',
-  `questions` INT UNSIGNED NULL DEFAULT 40 COMMENT 'liczba losowanych pytań',
-  `threshold` INT UNSIGNED NULL DEFAULT 0 COMMENT 'Minimalna liczba pytań do przejścia quizu. Wartość 0 oznacza brak progu.',
+  `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `attemps` INT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'liczba prób rozwiązywania quizu',
+  `questions` INT UNSIGNED NOT NULL DEFAULT 40 COMMENT 'liczba losowanych pytań',
+  `threshold` INT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Minimalna liczba pytań do przejścia quizu. Wartość 0 oznacza brak progu.',
   PRIMARY KEY (`quiz_id`),
   INDEX `fk_category_idx` (`category_id` ASC),
   CONSTRAINT `fk_category`
