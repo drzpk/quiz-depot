@@ -159,7 +159,8 @@ class DatabaseManager {
         $question->quiz = $quiz;
         $question->question = $questionRow->question;
         $question->rightAnswer = $questionRow->right_answer;
-        $question->image = '/img/quiz/question/' . $questionRow->image;
+        if ($questionRow->image)
+            $question->image = '/img/quiz/question/' . $questionRow->image;
         // TODO: tagi
 
         $question->wrongAnswers[0] = $questionRow->wrong_answer_1;
