@@ -34,6 +34,7 @@ class CreateDb extends Migration {
             $table->integer('attempts')->unsigned()->default(0);
             $table->integer('questions')->unsigned()->default(40);
             $table->integer('threshold')->unsigned()->default(0);
+            $table->integer('time')->unsigned()->default(0);
 
             $table->foreign('category_id')->references('category_id')->on('categories');
         });

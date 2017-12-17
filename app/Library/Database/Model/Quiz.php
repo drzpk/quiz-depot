@@ -21,6 +21,8 @@ class Quiz {
     public $questions = [];
     /** Minimalna liczba poprawnych odpowiedzi do przejścia quizu (0 oznacza brak progu) */
     public $threshold = 0;
+    /** Czas (w sekundach) potrzebny na rozwiązanie quizu. wartość 0 oznacza brak limitu czasowego. */
+    public $time = 0;
 
     public function checkConstraints() {
         if (strlen($this->name) > 32)

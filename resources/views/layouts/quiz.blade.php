@@ -56,3 +56,21 @@
 </form>
 @endif
 @endsection
+
+@section('left')
+@if (!$solution && $time > 0)
+<div class="clock-container">
+    <div class="clock">
+        @php
+        $mins = floor($time / 60);
+        $secs = str_pad($time % 60, 2, '0', STR_PAD_LEFT);
+        $timeLeft = $mins . ':' . $secs;
+        @endphp
+        <p>Pozostały czas: <span id="clock-value">{{ $timeLeft }}</span></p>
+    </div>
+</div>
+<script>
+    window.seconds = {{ $time }};
+</script>
+@endif
+@endsection

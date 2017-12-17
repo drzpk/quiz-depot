@@ -131,6 +131,7 @@ class DatabaseManager {
         $quiz->questionCount = $row->question_count;
         $quiz->questionChunkSize = $row->questions;
         $quiz->threshold = $row->threshold;
+        $quiz->time=  $row->time;
 
         return $quiz;
     }
@@ -241,7 +242,8 @@ class DatabaseManager {
         
         $query = [
             'category_id' => $quiz->category->id,
-            'name' => $quiz->name
+            'name' => $quiz->name,
+            'time' => $quiz->time
         ];
         if ($quiz->questionChunkSize > 0)
             $query['questions'] = $quiz->questionChunkSize;

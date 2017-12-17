@@ -73,6 +73,7 @@ class EESeeder extends Seeder {
         $quiz->category = $category;
         $quiz->name = $name;
         $quiz->threshold = 20;
+        $quiz->time = 60 * 60;
         if (!$this->manager->createQuiz($quiz)) {
             echo 'Nie udało się utworzyć quizu: ' . $manager->getLastErrorDesc() . PHP_EOL;
             return;

@@ -64,6 +64,7 @@ CREATE TABLE IF NOT EXISTS `quiz_depot`.`quizzes` (
   `attemps` INT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'liczba prób rozwiązywania quizu',
   `questions` INT UNSIGNED NOT NULL DEFAULT 40 COMMENT 'liczba losowanych pytań',
   `threshold` INT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Minimalna liczba pytań do przejścia quizu. Wartość 0 oznacza brak progu.',
+  `time` INT UNSIGNED NOT NULL DEFAULT 0 COMMENC 'Czas trzebny na rozwiązanie quizu (w sekundach)',
   PRIMARY KEY (`quiz_id`),
   INDEX `fk_category_idx` (`category_id` ASC),
   CONSTRAINT `fk_category`

@@ -8,7 +8,9 @@
     <body>
         @include('components.header')
         <div class="ui grid">
-            <div class="three wide column"></div>
+            <div class="three wide column">
+                @yield('left')
+            </div>
             <div class="ten wide column">
                 @yield('content')
             </div>

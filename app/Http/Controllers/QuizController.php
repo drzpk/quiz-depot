@@ -42,7 +42,7 @@ class QuizController extends Controller {
             $question->wrong = false;
         }
 
-        // zapisanie poprawnych odpowiedzi w sesji
+        // Zzapisanie danych sesji
         $request->session()->put('solution', $solution);
         $request->session()->put('quizId', $quizId);
 
@@ -51,6 +51,7 @@ class QuizController extends Controller {
             'name' => $quiz->name,            
             'questions' => $quiz->questions,
             'questionChunkSize' => $quiz->questionChunkSize,
+            'time' => $quiz->time,
             'solution' => false
         ];
         return view('layouts.quiz', $params);
@@ -135,6 +136,11 @@ class QuizController extends Controller {
             'passed' => $passed,
             'solution' => true
         ];
+
+        // Usunięcie quizu z sesji w celu zapobieżenia nadużyć
+        $session->forget('quizId');
+        $session->forget('solution');
+
         return view('layouts.quiz', $params);
     }
 

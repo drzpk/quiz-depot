@@ -132,3 +132,21 @@ $badColor: #ca4f4f;
 .end-quiz {
     text-align: center;
 }
+
+.clock-container {
+    position: fixed;
+    width: inherit;
+
+    .clock {
+        margin: 50px 10px 0;
+        padding: 15px 0;    
+        text-align: center;
+        border: 2px solid lightgray;
+        border-radius: 5px;
+        font-size: 1.3em;
+
+        span {
+            font-weight: bold;
+        }
+    }
+}
